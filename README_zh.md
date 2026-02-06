@@ -14,6 +14,16 @@
 - 💻 无需后端，纯前端实现
 - 🌐 支持中英文双语切换
 
+## ✅ 已测试供应商
+
+| 供应商 | Base URL | 状态 | API模式 |
+|--------|----------|------|------|
+| DeepSeek | `https://api.deepseek.com` | ✅ 已测试 | openai-completions |
+| SiliconFlow | `https://api.siliconflow.cn` | ✅ 已测试 | oopenai-completions/anthropic-messages |
+| ollama | `http://localhost:11434` | ✅ 已测试 | openai-completions |
+
+> 标记 ✅ 的供应商已验证可在 OpenClaw 中正常使用。未测试的供应商可能同样可用，欢迎贡献测试结果！
+
 ## 🚀 快速开始
 
 ### 在线部署（推荐）

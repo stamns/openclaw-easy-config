@@ -14,6 +14,16 @@ A lightweight web tool for quickly generating OpenClaw configuration files.
 - 💻 No backend required — runs entirely in the browser
 - 🌐 Bilingual support (English / Chinese)
 
+## ✅ Tested Providers
+
+| Provider | Base URL | Status | Api Mode |
+|----------|----------|--------|--------|
+| DeepSeek | `https://api.deepseek.com` | ✅ Tested | openai-completions |
+| SiliconFlow | `https://api.siliconflow.cn` | ✅ Tested | openai-completions/anthropic-messages |
+| ollama | `http://localhost:11434` | ✅ Tested | openai-completions |
+
+> Providers marked ✅ have been verified to work with OpenClaw. Untested providers may still work — contributions welcome!
+
 ## 🚀 Quick Start
 
 ### Cloud Deployment (Recommended)

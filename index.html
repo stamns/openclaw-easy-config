@@ -93,8 +93,9 @@
           <label for="apimode" data-i18n="label_apimode">API模式</label>
           <div class="field-wrapper">
             <select id="apimode">
-              <option value="anthropic-messages">anthropic-messages</option>
               <option value="openai-completions">openai-completions</option>
+              <option value="openai-responses">openai-responses</option>
+              <option value="anthropic-messages">anthropic-messages</option>
               <option value="google-generative-ai">google-generative-ai</option>
               <option value="custom" data-i18n="custom">自定义</option>
             </select>
@@ -105,6 +106,8 @@
           <label for="model_id" data-i18n="label_model_id">模型ID</label>
           <div class="field-wrapper">
             <select id="model_id">
+              <option value="deepseek-chat">deepseek-chat</option>
+              <option value="deepseek-reasoner">deepseek-reasoner</option>
               <option value="claude-sonnet-4-5-20250929">claude-sonnet-4-5-20250929</option>
               <option value="claude-sonnet-4.5-agent">claude-sonnet-4.5-agent</option>
               <option value="gpt-5.2">gpt-5.2</option>

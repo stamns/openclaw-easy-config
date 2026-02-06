@@ -5,8 +5,10 @@ const copyBtn = document.getElementById("copyBtn");
 
 // Provider to Base URL mapping - ONLY MAINTAIN THIS!
 const providerBaseUrlMap = {
-  "milocode": "https://api.joyzhi.com",
+  "DeepSeek": "https://api.deepseek.com",
+  "SiliconFlow": "https://api.siliconflow.cn",
   "ollama": "http://localhost:11434",
+  "milocode": "https://api.joyzhi.com",
   "duckcodingJP": "https://jp.duckcoding.com",
   "FastRouter": "https://api-key.info",
   "i7Relay": "https://i7dc.com/api"
