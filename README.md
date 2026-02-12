@@ -9,7 +9,7 @@ A lightweight web tool for quickly generating OpenClaw configuration files.
 ## ✨ Features
 
 - 🎯 Supports multiple 3rd-party API providers (ollama, etc.)
-- 🔧 Customizable Base URL, provider, API mode, and model ID
+- 🔧 Customizable Base URL, provider, API mode, and model IDs
 - 📋 One-click copy of generated config JSON
 - 💻 No backend required — runs entirely in the browser
 - 🌐 Bilingual support (English / Chinese)
@@ -23,6 +23,7 @@ A lightweight web tool for quickly generating OpenClaw configuration files.
 | ollama | `http://localhost:11434` | ✅ Tested | openai-completions |
 
 > Providers marked ✅ have been verified to work with OpenClaw. Untested providers may still work — contributions welcome!
+> Some providers' openai-completions endpoints only support /v1 (such as the new-api base), so if you cannot connect, I suggest you try adding /v1 after the api endpoint.
 
 ## 🚀 Quick Start
 
@@ -90,7 +91,7 @@ Then visit `http://localhost:8000`
 1. **Select or enter Base URL** — pick a preset API address from the dropdown, or choose "Custom"
 2. **Select Provider** — choose an API provider (Base URL auto-fills accordingly)
 3. **Set API Mode** — select `anthropic-messages`, `openai-completions`, or others
-4. **Enter Model ID** — pick a preset model or enter a custom model ID
+4. **Enter Model IDs** — add one or more model IDs, you can remove any you don't need
 5. **Enter API Key** — paste the token from your 3rd-party API provider
 6. **Paste Config** — paste your `~/.openclaw/openclaw.json` content
 7. **Click Send** — generate the new configuration

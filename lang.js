@@ -15,6 +15,8 @@ const translations = {
     placeholder_config: "粘贴您的~/.openclaw/openclaw.json内容，或在您的openclaw的web控制台中的setting下的config选项卡中，切换为Raw模式找到",
     btn_send: "发送",
     btn_copy: "复制",
+    btn_add_model: "添加模型",
+    btn_remove_model: "删除",
     status_ready: "就绪",
     status_processing: "处理中...",
     status_done: "完成",
@@ -25,6 +27,7 @@ const translations = {
     err_no_config: "错误: 请输入 Config JSON",
     err_no_baseurl: "错误: 请选择或输入 Base URL",
     err_no_apikey: "错误: 请输入 API Key",
+    err_no_model: "错误: 请至少填写一个模型 ID",
     err_json_parse: "配置 JSON 格式错误"
   },
   en: {
@@ -43,6 +46,8 @@ const translations = {
     placeholder_config: "Paste your ~/.openclaw/openclaw.json content, or find it in the OpenClaw web console under Settings > Config tab (switch to Raw mode)",
     btn_send: "Send",
     btn_copy: "Copy",
+    btn_add_model: "Add Model",
+    btn_remove_model: "Remove",
     status_ready: "Ready",
     status_processing: "Processing...",
     status_done: "Done",
@@ -53,6 +58,7 @@ const translations = {
     err_no_config: "Error: Please enter Config JSON",
     err_no_baseurl: "Error: Please select or enter Base URL",
     err_no_apikey: "Error: Please enter API Key",
+    err_no_model: "Error: Please provide at least one model ID",
     err_json_parse: "Invalid config JSON format"
   }
 };

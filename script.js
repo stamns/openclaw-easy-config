@@ -2,6 +2,8 @@ const sendBtn = document.getElementById("sendBtn");
 const statusEl = document.getElementById("status");
 const outputEl = document.getElementById("output");
 const copyBtn = document.getElementById("copyBtn");
+const modelListEl = document.getElementById("modelList");
+const addModelBtn = document.getElementById("addModelBtn");
 
 // Provider to Base URL mapping - ONLY MAINTAIN THIS!
 const providerBaseUrlMap = {
@@ -9,10 +11,22 @@ const providerBaseUrlMap = {
   "SiliconFlow": "https://api.siliconflow.cn",
   "ollama": "http://localhost:11434",
   "milocode": "https://api.joyzhi.com",
+  "milocode-v1": "https://api.joyzhi.com/v1",
   "duckcodingJP": "https://jp.duckcoding.com",
+  "duckcodingJP-v1": "https://jp.duckcoding.com/v1",
   "FastRouter": "https://api-key.info",
   "i7Relay": "https://i7dc.com/api"
 };
+
+const modelOptions = [
+  "deepseek-chat",
+  "deepseek-reasoner",
+  "claude-sonnet-4-5-20250929",
+  "claude-sonnet-4.5-agent",
+  "gpt-5.2",
+  "gpt-5-mini",
+  "gemini-3-pro-preview"
+];
 
 // Dynamically populate provider select
 const providerSelect = document.getElementById("provider");
@@ -42,7 +56,7 @@ customBaseurlOption.textContent = t("custom");
 baseurlSelect.appendChild(customBaseurlOption);
 
 // Handle custom input visibility
-const fields = ["baseurl", "provider", "apimode", "model_id"];
+const fields = ["baseurl", "provider", "apimode"];
 fields.forEach(field => {
   const select = document.getElementById(field);
   const customInput = document.getElementById(`${field}_custom`);
@@ -55,6 +69,102 @@ fields.forEach(field => {
     }
   });
 });
+
+function updateModelRemoveState() {
+  const removeButtons = modelListEl.querySelectorAll(".remove-model");
+  const disableRemove = removeButtons.length <= 1;
+  removeButtons.forEach(btn => {
+    btn.disabled = disableRemove;
+  });
+}
+
+function createModelRow(initialValue) {
+  const row = document.createElement("div");
+  row.className = "model-row";
+
+  const fieldWrapper = document.createElement("div");
+  fieldWrapper.className = "field-wrapper";
+
+  const select = document.createElement("select");
+  select.className = "model-select";
+
+  modelOptions.forEach(modelId => {
+    const option = document.createElement("option");
+    option.value = modelId;
+    option.textContent = modelId;
+    select.appendChild(option);
+  });
+
+  const customOption = document.createElement("option");
+  customOption.value = "custom";
+  customOption.textContent = t("custom");
+  select.appendChild(customOption);
+
+  const customInput = document.createElement("input");
+  customInput.type = "text";
+  customInput.className = "custom-input model-custom";
+  customInput.setAttribute("data-i18n-placeholder", "placeholder_model_id");
+  customInput.placeholder = t("placeholder_model_id");
+
+  const removeBtn = document.createElement("button");
+  removeBtn.type = "button";
+  removeBtn.className = "ghost-btn remove-model";
+  removeBtn.setAttribute("data-i18n", "btn_remove_model");
+  removeBtn.textContent = t("btn_remove_model");
+
+  select.addEventListener("change", () => {
+    if (select.value === "custom") {
+      customInput.classList.add("show");
+    } else {
+      customInput.classList.remove("show");
+    }
+  });
+
+  removeBtn.addEventListener("click", () => {
+    row.remove();
+    updateModelRemoveState();
+  });
+
+  fieldWrapper.appendChild(select);
+  fieldWrapper.appendChild(customInput);
+  row.appendChild(fieldWrapper);
+  row.appendChild(removeBtn);
+
+  if (initialValue) {
+    if (modelOptions.includes(initialValue)) {
+      select.value = initialValue;
+    } else {
+      select.value = "custom";
+      customInput.classList.add("show");
+      customInput.value = initialValue;
+    }
+  }
+
+  modelListEl.appendChild(row);
+  updateModelRemoveState();
+}
+
+function getModelIds() {
+  const rows = modelListEl.querySelectorAll(".model-row");
+  const modelIds = [];
+
+  rows.forEach(row => {
+    const select = row.querySelector(".model-select");
+    const customInput = row.querySelector(".model-custom");
+    const value = select.value === "custom" ? customInput.value.trim() : select.value;
+    if (value) {
+      modelIds.push(value);
+    }
+  });
+
+  return modelIds;
+}
+
+addModelBtn.addEventListener("click", () => {
+  createModelRow();
+});
+
+createModelRow();
 
 // Bind provider to baseurl
 const baseurlCustom = document.getElementById("baseurl_custom");
@@ -101,7 +211,7 @@ sendBtn.addEventListener("click", async () => {
     apikey: document.getElementById("apikey").value.trim(),
     apimode: getValue("apimode"),
     provider: getValue("provider"),
-    model_id: getValue("model_id")
+    model_id: getModelIds()
   };
 
   // Validation
@@ -117,6 +227,11 @@ sendBtn.addEventListener("click", async () => {
   }
   if (!payload.apikey) {
     outputEl.textContent = t("err_no_apikey");
+    setStatus(t("status_failed"));
+    return;
+  }
+  if (!payload.model_id.length) {
+    outputEl.textContent = t("err_no_model");
     setStatus(t("status_failed"));
     return;
   }
@@ -139,12 +254,21 @@ sendBtn.addEventListener("click", async () => {
 
 function processConfig(payload) {
   try {
+    const modelIds = payload.model_id;
+    const primaryModelId = modelIds[0];
+
     // Step 1: Build agents object
+    const agentModels = {};
+    modelIds.forEach(id => {
+      agentModels[`${payload.provider}/${id}`] = { alias: id };
+    });
+
     const agents = {
       "defaults": {
         "model": {
-          "primary": `${payload.provider}/${payload.model_id}`
-        }
+          "primary": `${payload.provider}/${primaryModelId}`
+        },
+        "models": agentModels
       }
     };
 
@@ -156,12 +280,10 @@ function processConfig(payload) {
           "baseUrl": payload.baseurl,
           "apiKey": payload.apikey,
           "api": payload.apimode,
-          "models": [
-            {
-              "id": payload.model_id,
-              "name": payload.model_id
-            }
-          ]
+          "models": modelIds.map(id => ({
+            "id": id,
+            "name": id
+          }))
         }
       }
     };

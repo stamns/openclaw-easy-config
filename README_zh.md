@@ -9,7 +9,7 @@
 ## ✨ 功能特点
 
 - 🎯 支持多个第三方 API 提供商（ollama 等）
-- 🔧 可自定义 Base URL、提供商、API 模式和模型 ID
+- 🔧 可自定义 Base URL、提供商、API 模式和多个模型 ID
 - 📋 一键复制生成的配置 JSON
 - 💻 无需后端，纯前端实现
 - 🌐 支持中英文双语切换
@@ -19,10 +19,11 @@
 | 供应商 | Base URL | 状态 | API模式 |
 |--------|----------|------|------|
 | DeepSeek | `https://api.deepseek.com` | ✅ 已测试 | openai-completions |
-| SiliconFlow | `https://api.siliconflow.cn` | ✅ 已测试 | oopenai-completions/anthropic-messages |
+| SiliconFlow | `https://api.siliconflow.cn` | ✅ 已测试 | openai-completions/anthropic-messages |
 | ollama | `http://localhost:11434` | ✅ 已测试 | openai-completions |
 
 > 标记 ✅ 的供应商已验证可在 OpenClaw 中正常使用。未测试的供应商可能同样可用，欢迎贡献测试结果！
+> 某些提供商的openai-completions端点仅支持/v1（如new-api基座），所以若无法连通，我希望您可以尝试在api端点后方添加/v1。
 
 ## 🚀 快速开始
 
@@ -90,7 +91,7 @@ php -S localhost:8000
 1. **选择或输入 Base URL**：从下拉列表选择预设的 API 地址，或选择"自定义"输入自己的地址
 2. **选择提供商**：选择 API 提供商（会自动匹配对应的 Base URL）
 3. **配置 API 模式**：选择 `anthropic-messages`、`openai-completions` 或其他模式
-4. **输入模型 ID**：选择预设模型或自定义模型 ID
+4. **输入模型 ID**：可添加多个模型 ID，不需要的可删除
 5. **输入 API Key**：填入从第三方 API 站获取的令牌
 6. **粘贴原配置**：粘贴您的 `~/.openclaw/openclaw.json` 内容
 7. **点击发送**：生成新的配置文件
